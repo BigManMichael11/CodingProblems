@@ -7,14 +7,19 @@ public:
     int removeDuplicates(vector<int>& nums) {
         uint dup = 0;
         const uint numsSize = nums.size();
-        for (uint i = 0; i < numsSize - dup - MaxDupCount - 1;i++){
+        for (uint i = 0; i < numsSize;i++){
+            printf("i : %d, dup: %d \t ", i, dup);
+            for(uint k = 0; k < numsSize; k++){
+                printf("%d", nums[k]);
+            }
+            printf("\n");
+
+            if(i != 0) nums[i-dup] = nums[i];
             if(nums[i] == nums[i+MaxDupCount]){
                 dup++;
-                for(uint j = i; j < numsSize - dup; j++){
-                    nums[j] = nums[j + 1];
-                }
-                i--;
+                //i++;
             }
+            
         }
         return numsSize - dup;
     }
