@@ -1,11 +1,13 @@
 #include <vector>
+#define MaxDupCount 2
+
 
 class Solution {
 public:
     int removeDuplicates(vector<int>& nums) {
         uint dup = 0;
         const uint numsSize = nums.size();
-        for (uint i = 0; i < numsSize - dup - 3;i++){
+        for (uint i = 0; i < numsSize - dup - MaxDupCount - 1;i++){
             if(nums[i] == nums[i+1] && nums[i] == nums[i+2]){
                 dup++;
                 for(uint j = i; j < numsSize - dup; j++){
