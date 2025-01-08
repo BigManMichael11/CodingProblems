@@ -8,7 +8,7 @@ public:
         uint dup = 0;
         const uint numsSize = nums.size();
         for (uint i = 0; i < numsSize - dup - MaxDupCount - 1;i++){
-            if(nums[i] == nums[i+1] && nums[i] == nums[i+2]){
+            if(nums[i] == nums[i+MaxDupCount]){
                 dup++;
                 for(uint j = i; j < numsSize - dup; j++){
                     nums[j] = nums[j + 1];
