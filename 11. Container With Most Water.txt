@@ -1,0 +1,43 @@
+#define loopChecks 4
+//determines how often the nested loop checks to see if it is finished, larger numbers mean more potential for wasted loops and smaller ones mean potential for wasted processing power during cycles
+//used with a logical shift operator, so a value of 1 means every 2 cycles, 2 means 4, 3 means 8, etc
+
+class Solution {
+public:
+    int maxArea(vector<int>& height) {
+        const int vecSize = height.size();
+        int largestArea   = 1;
+        int largestStart  = 0;
+        int largestEnd    = 0;
+        int tmpArea       = 0;
+        
+        uint counter = 0;
+
+        for(int i = 0; i < vecSize; i++){
+            int startHeight = height[i];//start height
+
+            int additionalStep = largestArea % startHeight == 0 ? largestArea / startHeight : largestArea / startHeight + 1;
+            //offsets index by known amount needed, ex if max area is 79 and start height is 10, we know we need at least 8 steps to get a larger area
+
+            for(int j = vecSize - 1; j > i+additionalStep && j <= vecSize; j--){//decrements to hopefully catch largest sooner
+                int lowerHeight = height[i] < height[j] ?  height[i] : height[j];
+
+                if (counter++ >> loopChecks == 1){
+                    counter = 0;
+                    if(largestArea / startHeight > (j-i)) break;//mathematically already found the largest possible so break
+                    //ex if we have just found an area of 79 with a startHeight of 10 but there are only 7 steps left, we know we can break
+                }
+
+                tmpArea = (j-i) * lowerHeight;
+                
+                if(tmpArea > largestArea) largestArea = tmpArea;
+                
+                largestStart = i;//just in case we want the indexes of start and end
+                largestEnd = height[j];
+            }
+        }
+
+
+        return largestArea;
+    }
+};
