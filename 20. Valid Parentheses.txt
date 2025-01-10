@@ -1,49 +1,26 @@
-/**
- * Definition for singly-linked list.
- * struct ListNode {
- *     int val;
- *     ListNode *next;
- *     ListNode() : val(0), next(nullptr) {}
- *     ListNode(int x) : val(x), next(nullptr) {}
- *     ListNode(int x, ListNode *next) : val(x), next(next) {}
- * };
- */
 class Solution {
 public:
-    ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        int l1Val = 0;
-        int l2Val = 0;
+    stack<int> stack;
 
-        ListNode* l1Var = l1;
-        ListNode* l2Var = l2;
-
-        ListNode* ret = new ListNode();
-        ListNode* loopNode = ret;
-        
-
-        int tmpVal1 = 0;
-        int tmpVal2 = 0;
-        int carry = 0;
-
-        while(l1Var != NULL || l2Var != NULL || carry != 0){//solve using carry
-            if (l1Var){
-                tmpVal1 = l1Var->val;
-                l1Var = l1Var->next;
-            } else tmpVal1 = 0;
-            if (l2Var){
-                tmpVal2 = l2Var->val;
-                l2Var = l2Var->next;
-            } else tmpVal2 = 0;
-            loopNode->val = (tmpVal1 + tmpVal2 + carry) % 10;
-
-            carry = (tmpVal1 + tmpVal2 + carry) > 9 ? 1 : 0;
-            loopNode->next = new ListNode();
-            if (l1Var != NULL || l2Var != NULL || carry != 0) loopNode = loopNode->next;
-
-            printf("%d %d %d\n", tmpVal1, tmpVal2, carry);
+    bool isValid(string s) {
+        for (int i = 0; i < s.length(); i++){//for each character in the string
+            if     (s.at(i) == '[')stack.push('[');
+            else if (s.at(i) ==']'){
+                if(stack.top() != '[') return false;
+                stack.pop();
+            }
+            else if (s.at(i) =='(')stack.push('(');
+            else if (s.at(i) ==')'){
+                if (stack.top() != '(') return false;
+                stack.pop();
+            }
+            else if (s.at(i) =='{') stack.push('{');
+            else if (s.at(i) =='}'){
+                if (stack.top() != '{') return false;
+                stack.pop();
+            }
         }
-        loopNode->next = NULL;
 
-        return ret;
+        return true;
     }
 };
