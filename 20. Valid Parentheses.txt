@@ -1,0 +1,39 @@
+#define parenCount 3
+
+enum validParen{//allows for easy reference to array indexing
+  PAREN,
+  BRACE,
+  BRACKET,
+};
+
+class Solution {
+public:
+    uint *countArray = new uint[parenCount];//holds count for each parenthesis, bracket, etc
+    bool valid = false;
+
+    bool isValid(string s) {
+        for(uint i = 0; i < parenCount; i++){//initializes count to 0
+            countArray[i] = 0;
+        }
+
+        for (int i = 0; i < s.length(); i++){//for each character in the string
+            if     (s.at(i) == '[') countArray[BRACKET]++;//increment/decrement its corresponding point in the array
+            else if (s.at(i) ==']') countArray[BRACKET]--;
+            else if (s.at(i) =='(') countArray[PAREN]++;
+            else if (s.at(i) ==')') countArray[PAREN]--;
+            else if (s.at(i) =='{') countArray[BRACE]++;
+            else if (s.at(i) =='}') countArray[BRACE]--;
+
+            for (uint j = 0; j < parenCount; j++){//for each index in the array
+                if(countArray[j] < 0) return false;//if it is negative it is invalid
+            }
+        }
+
+
+        for (uint j = 0; j < parenCount; j++){//for each index in the array
+            if(countArray[j] != 0) return false;//if it is not 0 it is invalid
+        }
+
+        return true;
+    }
+};
