@@ -11,22 +11,18 @@
 class Solution {
 public:
     ListNode* addTwoNumbers(ListNode* l1, ListNode* l2) {
-        int l1Val = 0;
-        int l2Val = 0;
-
-        ListNode* l1Var = l1;
+        ListNode* l1Var = l1;//nodes for reading lists, as to not change the given pointers
         ListNode* l2Var = l2;
 
-        ListNode* ret = new ListNode();
-        ListNode* loopNode = ret;
+        ListNode* ret = new ListNode();//return list
+        ListNode* loopNode = ret;//loop list to keep return list pointing at beginning
         
-
-        int tmpVal1 = 0;
+        int tmpVal1 = 0;//temp vals for simplicity
         int tmpVal2 = 0;
-        int carry = 0;
+        int carry = 0;//carry value between loops
 
-        while(l1Var != NULL || l2Var != NULL || carry != 0){//solve using carry
-            if (l1Var){
+        while(l1Var != NULL || l2Var != NULL || carry != 0){//loop for as long as you get new vals and still have things to carry
+            if (l1Var){//updated these vars if they exist
                 tmpVal1 = l1Var->val;
                 l1Var = l1Var->next;
             } else tmpVal1 = 0;
@@ -34,15 +30,14 @@ public:
                 tmpVal2 = l2Var->val;
                 l2Var = l2Var->next;
             } else tmpVal2 = 0;
-            loopNode->val = (tmpVal1 + tmpVal2 + carry) % 10;
 
-            carry = (tmpVal1 + tmpVal2 + carry) > 9 ? 1 : 0;
-            loopNode->next = new ListNode();
-            if (l1Var != NULL || l2Var != NULL || carry != 0) loopNode = loopNode->next;
+            loopNode->val = (tmpVal1 + tmpVal2 + carry) % 10;//set val
 
-            printf("%d %d %d\n", tmpVal1, tmpVal2, carry);
+            carry = (tmpVal1 + tmpVal2 + carry) > 9 ? 1 : 0;//set carry
+            loopNode->next = new ListNode();//update next pointer
+            if (l1Var != NULL || l2Var != NULL || carry != 0) loopNode = loopNode->next;//set to next if we have another loop
         }
-        loopNode->next = NULL;
+        loopNode->next = NULL;//remove blank pointer at end
 
         return ret;
     }
