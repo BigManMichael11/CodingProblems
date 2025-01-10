@@ -17,16 +17,24 @@ public:
         }
 
         for (int i = 0; i < s.length(); i++){//for each character in the string
-            if     (s.at(i) == '[') countArray[BRACKET]++;//increment/decrement its corresponding point in the array
-            else if (s.at(i) ==']') countArray[BRACKET]--;
-            else if (s.at(i) =='(') countArray[PAREN]++;
-            else if (s.at(i) ==')') countArray[PAREN]--;
-            else if (s.at(i) =='{') countArray[BRACE]++;
-            else if (s.at(i) =='}') countArray[BRACE]--;
-
-            for (uint j = 0; j < parenCount; j++){//for each index in the array
-                if(countArray[j] < 0) return false;//if it is negative it is invalid
+            if     (s.at(i) == '[')countArray[BRACKET]++;//increment/decrement its corresponding point in the array
+            else if (s.at(i) ==']'){
+                if( --countArray[BRACKET] < 0) return false;
             }
+            else if (s.at(i) =='(') countArray[PAREN]++;
+            else if (s.at(i) ==')'){
+                if (--countArray[PAREN] < 0) return false;
+            }
+            else if (s.at(i) =='{') countArray[BRACE]++;
+            else if (s.at(i) =='}'){
+                if (--countArray[BRACE] < 0) return false;
+            }
+
+
+            //optimized out
+            //for (uint j = 0; j < parenCount; j++){//for each index in the array
+            //    if(countArray[j] < 0) return false;//if it is negative it is invalid
+            //}
         }
 
 
