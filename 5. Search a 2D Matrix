@@ -1,0 +1,117 @@
+/*
+
+example matrix
+
+[[1,3,5,7],[10,11,16,20],[23,30,34,60]]
+
+1   3   5   7
+10  11  16  20
+23  30  34  60
+
+example of y column [1,10,23]
+example of x row [1,3,5,7]
+example of coordinate (2,1) = 11
+
+*/
+
+class Solution {
+public:
+    bool searchMatrix(vector<vector<int>>& matrix, int target) {
+        const uint x_length = matrix[0].size();//horizontal length
+        const uint y_length = matrix.size();//veritcal length
+
+        uint x = 0;//variable for x coord
+        uint y = y_length / 2 ;//variable for y coord, initialize to y_length / 2 to start in the middle of the column
+
+        uint prev_x = x;//variables for previous coords
+        uint prev_y = y;
+
+        static uint val = matrix[y][x];//value for current index of matrix[y][x], gets updated as y and x get updated
+        static uint prev_val = matrix[y][x];//value for previous index of matrix[y][x], gets updated before y and x get updated
+
+        uint x_incr = x_length / 4 == 0 ? 1 : x_length / 4;//increment counters for changing the indexes
+        uint y_incr = y_length / 4 == 0 ? 1 : y_length / 4;
+
+        printf("Starting search for target %d\n\n", target);
+        
+        printf("Starting search for y coordinate\n\n");
+        printf("Y Guess 1: %d\t%d,%d  (x,y)\n",matrix[y][x],x,y);
+
+        if(val == target){
+            printf("Got lucky and hit target on first guess with binary search\n");
+            return true;
+        }
+
+
+        y = target > val ? y + y_incr : y - y_incr;//we do not have the right coordinate so change y accordingly
+        y_incr = y_incr / 2 == 0 ? 1 : y_incr / 2;//reduce increment value as with binary search
+
+
+        //loop variable just in case bad code gets run, so this will not run infinitely
+        for(uint i = 0; i < y_length; i++){//this loop is for finding the y coordinate
+            val = matrix[y][x];//update val
+            printf("Y Guess %d: %d\t%d,%d  (x,y)\n",i+2,matrix[y][x],x,y);
+            if(val == target){
+                printf("\n\nFound target!!\n\n");
+                return true;
+            }
+            if(((target < prev_val && target > val) || (target > prev_val && target < val)) && y_incr == 1){// if target is in between our current and previous measurement, and increment = 1, we know we are on the right value
+                if(prev_val < val) y = prev_y;//since we start on the far left column, if the last step was incrementing (and we did not find our value), the correct y coord is the previous
+                //ex for array in header
+                //we just incremented from 1 to 10, and our target is 3, we know it has to have a y index of 0
+
+                printf("Found y coordinate\n\n");
+                break;
+            }
+
+            y_incr = y_incr / 2 == 0 ? 1 : y_length / 2;//we did not find the value so update y increment
+            y = target > val ? y + y_incr : y - y_incr;//then update y using binary search
+            
+            prev_val = val;//update previous values
+            prev_y = y;
+        }
+
+
+        
+        printf("Starting search for x coordinate\n\n");
+        x = x_length / 2;//now start looking in the middle of the row
+        printf("X Guess 1: %d\t%d,%d  (x,y)\n",matrix[y][x],x,y);
+        if(val == target){
+            return true;//if we found it return
+        }
+
+        val = matrix[y][x];
+        prev_val = val;
+        x = target > val ? x + x_incr : x - x_incr;//didn't find target, update x
+        x_incr = x_incr / 2 == 0 ? 1 : x_incr / 2;// then update increment for next iteration
+
+
+        for(uint i = 0; i < x_length; i++){//loop for finding x coordinate
+            //exact same structure as above
+            val = matrix[y][x];
+            printf("X Guess %d: %d\t%d,%d  (x,y)\n",i+2,matrix[y][x],x,y);
+
+            if(val == target){
+                printf("\n\nFound target!!\n\n");
+                return true;
+            }
+            
+            if(((target < prev_val && target > val) || (target > prev_val && target < val)) && x_incr == 1){
+                if(prev_val < val) x = prev_x;
+                printf("Found x coordinate\n\n");
+                break;
+            }
+
+
+            x_incr = x_incr / 2 == 0 ? 1 : x_length / 2;
+            x = target > val ? x + x_incr : x - x_incr;
+            
+            prev_val = val;
+            prev_x = x;
+        }
+
+        //we did not find the coordiante in our loops even at the smallest increment, so we know it is not in our matrix
+        printf("Coordinates do not match target, target not in matrix\n");
+        return false;
+    }
+};
