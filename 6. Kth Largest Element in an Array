@@ -3,17 +3,16 @@ public:
     int findKthLargest(vector<int>& nums, int k) {
         int max;
 
-        for(uint i = 0; i < k; i++){
+        for(uint i = 0; i < k; i++){//loop k times
             max = 0;
-            for(uint j = 0; j < nums.size(); j++){
-                
+            for(uint j = 0; j < nums.size(); j++){//loop through array
                 static uint max_location = 0;
-                if (nums[j] >= max){
+                if (nums[j] >= max){//if what we have found is larger than the max, replace max and update its location
                     max = nums[j];
                     max_location = j;
                 }
 
-                if(j >= nums.size() - 1){
+                if(j >= nums.size() - 1){// if we are at the end of this loop, we  have a valid maximum, so erase it from the vector
                     nums.erase(nums.begin() + max_location);
                     break;
                 }
