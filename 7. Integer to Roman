@@ -1,0 +1,86 @@
+class Solution {
+public:
+    
+    string romanNum;
+
+    void recursiveForm(int num){
+            printf("Num: %d\troman: %s\n", num, romanNum.c_str());
+
+            int firstDigit = num;
+            bool subtractiveForm;
+            for(uint i = 0; i < 3; i++){//1 <= num <= 3999
+                if(firstDigit < 10) break;
+                firstDigit = firstDigit / 10;
+            }
+
+            subtractiveForm= firstDigit == 4 || firstDigit == 9;
+
+            if(subtractiveForm){
+                if(num >= 900){
+                    num -= 900;
+                    romanNum += "CM";
+                    recursiveForm(num);
+                } else if (num >= 400){
+                    num -= 400;
+                    romanNum += "CD";
+                    recursiveForm(num);
+                } else if (num >= 90){
+                    num -= 90;
+                    romanNum += "XC";
+                    recursiveForm(num);
+                } else if (num >= 40){
+                    num -= 40;
+                    romanNum += "XL";
+                    recursiveForm(num);
+                } else if (num >= 9){
+                    num -= 9;
+                    romanNum += "IX";
+                    recursiveForm(num);
+                } else if (num == 4) {
+                    num -= 4;
+                    romanNum += "IV";
+                    return;
+                }
+            } else {
+                if(num >= 1000){
+                    num -= 1000;
+                    romanNum += "M";
+                    recursiveForm(num);
+                } else if (num >= 500){
+                    num -= 500;
+                    romanNum += "D";
+                    recursiveForm(num);
+                } else if (num >= 100){
+                    num -= 100;
+                    romanNum += "C";
+                    recursiveForm(num);
+                } else if (num >= 50){
+                    num -= 50;
+                    romanNum += "L";
+                    recursiveForm(num);
+                } else if (num >= 10){
+                    num -= 10;
+                    romanNum += "X";
+                    recursiveForm(num);
+                } else if (num >= 5){
+                    num -= 5;
+                    romanNum += "V";
+                    recursiveForm(num);
+                } else if (num >= 1){
+                    num -= 1;
+                    romanNum += "I";
+                    recursiveForm(num);
+                } else {
+                    return;
+                }
+            }
+        }
+
+    string intToRoman(int num) {
+        romanNum == "";
+
+        recursiveForm(num);
+
+        return romanNum;
+    }
+};
