@@ -1,0 +1,37 @@
+
+class Solution {
+public:
+
+    int int_to_gray(int val){
+        uint msb_loc;
+        int ret = 0;
+        for(msb_loc = 5; msb_loc >= 0; msb_loc--){
+            if(val >> msb_loc == 1){
+                break;//found MSB
+            }
+        }
+        printf("MSB loc %d\n", msb_loc);
+        if (msb_loc <= 0){
+            return 1;//value is 1 so just return 1
+        }
+        ret = val;//initalize return to sent val
+
+        for(int i = msb_loc - 1; i >= 0; i--){//for every bit but msb (because we keep that always)
+            ret = (((val >> i) & 1) ^ ((val >> (i+1)) & 1)) == 0 ? ret & ~(1 << i) : ret | (1 << i);
+            //set that bit to it's value xor the bit to the left of it
+        }
+        return ret;
+    }
+    
+    vector<int> grayCode(int n) {
+        vector<int> ret;
+        ret.push_back(0);//0 is 0 in gray code
+
+        for(int i = 1;; i++){//count up until we get our value in gray code
+            ret.push_back(int_to_gray(i));//convert these numbers to gray code
+            if (int_to_gray(i) == n) break;
+        }
+
+        return ret;
+    }
+};
