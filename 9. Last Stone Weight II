@@ -1,0 +1,32 @@
+class Solution {
+public:
+    int lastStoneWeightII(vector<int>& stones) {
+        vector<int> stone_copy = stones;
+        while(stone_copy.size() != 1){
+            static uint i;
+            for (i = 1; i < stone_copy.size(); i++){
+                if(stone_copy[i] >= stone_copy[0]) break;//find next highest after start
+            }
+            /*printf("\tVector: ");//debug print entire vector
+            for(uint j = 0; j < stone_copy.size();j++){
+                printf("%s%d",j == 0 ? "" : ", ", stone_copy[j]);
+            }
+            printf("\n");*/
+
+            if(stone_copy[i] == stone_copy[0]){//if they match, destroy both
+                stone_copy.erase(stone_copy.begin() + i);
+                stone_copy.erase(stone_copy.begin());
+            } else{//if they don't match subtract the lower from the higher, then remove the lower
+                if (stone_copy[i] > stone_copy[0]){
+                    stone_copy[i] -= stone_copy[0];
+                    stone_copy.erase(stone_copy.begin());
+                } else {
+                    stone_copy[0] -= stone_copy[i];
+                    stone_copy.erase(stone_copy.begin() + i);
+                }
+                
+            }
+        }
+        return stone_copy[0];
+    }
+};
