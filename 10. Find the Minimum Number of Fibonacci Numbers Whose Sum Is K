@@ -1,9 +1,8 @@
-//https://leetcode.com/problems/find-the-minimum-number-of-fibonacci-numbers-whose-sum-is-k/
 #include <math.h> 
 class Solution {
 public:
 
-    int recursive(int sum_val, vector<int>& fibonnaci, long int mask_length_prev, long int mask_prev){
+    /*int recursive(int sum_val, vector<int>& fibonnaci, long int mask_length_prev, long int mask_prev){
         long int mask = mask_prev;
         long int mask_length = mask_length_prev;
         int mask_loc = 0;
@@ -38,10 +37,27 @@ public:
         if(mask_length > 32) return -1;
         return recursive(sum_val, fibonnaci, mask_length, mask);
         return -2;
-    }
+    }*/
 
     int findMinFibonacciNumbers(int k) {
         vector<int> fibonnaci = {1,1};
-        return recursive(k, fibonnaci, 2, 1);
+
+        uint fib_index = 1;
+        while(fibonnaci[fib_index] + fibonnaci[fib_index++-1] <= k){//populated fibonnaci sequence up to the val we want
+            fibonnaci.push_back(fibonnaci[fib_index-1] + fibonnaci[fib_index-2]);
+            if(fib_index > 7) break;
+        }
+
+        int sum = 0;
+        int num_used = 0;
+        for(uint i = fibonnaci.size() - 1; i >= 0; i--){//starts with the highest fibonnaci number <= our number, then adds to it the numbers that don't exceed what we want
+            if (sum + fibonnaci[i] <= k){
+                sum += fibonnaci[i];
+                num_used++;//the counter for the number of fibonnaci numbers we used, since we skip some
+                if (sum == k) return num_used;
+            }
+        }
+        return 0;
+        //return recursive(k, fibonnaci, 2, 1);
     }
 };
