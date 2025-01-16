@@ -1,0 +1,47 @@
+//https://leetcode.com/problems/find-the-minimum-number-of-fibonacci-numbers-whose-sum-is-k/
+#include <math.h> 
+class Solution {
+public:
+
+    int recursive(int sum_val, vector<int>& fibonnaci, long int mask_length_prev, long int mask_prev){
+        long int mask = mask_prev;
+        long int mask_length = mask_length_prev;
+        int mask_loc = 0;
+        printf("Fibonnaci: ");
+        for(uint i = 0; i < mask_length; i++){
+            printf(", %d", fibonnaci[i]);
+        }
+        printf("\nmask_length: %ld\n", mask_length);
+        uint sum;
+        while(mask <= pow(2, mask_length) - 1){
+            printf("\tmask: %ld\n", mask);
+            
+            sum = 0;
+            printf("Inc array : ");
+            for(uint i = 0; i < mask_length; i++){
+                printf(" %d", (((mask >> i) & 1) == 1) ? fibonnaci[i] : 0);
+                sum += (((mask >> i) & 1) == 1) ? fibonnaci[i] : 0;
+            }
+            printf("\n");
+            if (sum == sum_val){
+                int bit_sum = 0;
+                for(uint i = 0; i < mask_length;i++){
+                    if(mask >> i & 1 == 1) bit_sum++;
+                }
+                return bit_sum;
+            }
+            mask++;
+        }
+        printf("Sum : %d\n\n", sum);
+        fibonnaci.push_back(fibonnaci[mask_length - 1] + fibonnaci[mask_length - 2]);
+        mask_length++;
+        if(mask_length > 32) return -1;
+        return recursive(sum_val, fibonnaci, mask_length, mask);
+        return -2;
+    }
+
+    int findMinFibonacciNumbers(int k) {
+        vector<int> fibonnaci = {1,1};
+        return recursive(k, fibonnaci, 2, 1);
+    }
+};
