@@ -1,0 +1,27 @@
+//https://leetcode.com/problems/divide-two-integers/
+class Solution {
+public:
+    int divide(int dividend, int divisor) {
+        //loop until remainder > divisor
+            //shift divisor to msb of dividend remainder
+            //increment total divison count to 1 << shift because the dividend is at least that much
+            //set remainder to difference
+        bool neg_divisor = divisor < 0 ? 1 : 0;
+        divisor = divisor < 0 ? -divisor : divisor;
+        if (divisor == 0) return 0;
+        uint remainder = dividend;
+        uint shift = 0;
+        uint total = 0;
+        while(remainder > divisor){
+            shift = 0;
+            while(divisor << ++shift <= remainder){
+                printf("\t\tshift: %d\tremainder: %d\n", shift, remainder);
+            }
+           shift--;
+           total += 1 << shift;
+           printf("shift: %d \tshift_total: %d\tremainder: %d\n",shift,total,remainder);
+           remainder -= divisor << shift;
+        }
+        return neg_divisor ? -total : total;
+    }
+};
