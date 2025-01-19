@@ -14,12 +14,9 @@ public:
         uint total = 0;
         while(remainder > divisor){
             shift = 0;
-            while(divisor << ++shift <= remainder){
-                printf("\t\tshift: %d\tremainder: %d\n", shift, remainder);
-            }
+            while(divisor << ++shift <= remainder){            }
            shift--;
            total += 1 << shift;
-           printf("shift: %d \tshift_total: %d\tremainder: %d\n",shift,total,remainder);
            remainder -= divisor << shift;
         }
         return neg_divisor ? -total : total;
