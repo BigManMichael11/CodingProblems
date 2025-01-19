@@ -12,7 +12,7 @@ public:
         uint remainder = dividend;
         uint shift = 0;
         uint total = 0;
-        while(remainder > divisor){
+        while(remainder >= divisor){
             shift = 0;
             while(divisor << ++shift <= remainder){            }
            shift--;
