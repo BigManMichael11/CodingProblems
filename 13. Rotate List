@@ -1,0 +1,40 @@
+//https://leetcode.com/problems/rotate-list/
+
+/**
+ * Definition for singly-linked list.
+ * struct ListNode {
+ *     int val;
+ *     ListNode *next;
+ *     ListNode() : val(0), next(nullptr) {}
+ *     ListNode(int x) : val(x), next(nullptr) {}
+ *     ListNode(int x, ListNode *next) : val(x), next(next) {}
+ * };
+ */
+class Solution {
+public:
+    ListNode* rotateRight(ListNode* head, int k) {
+        if (k == 0) return head;//if no rotate, just return head
+        if (head == NULL) return NULL;//if no list, return empty list
+
+        ListNode *node_var = head;
+        ListNode *temp_node;
+
+        uint list_length = 0;
+
+        while(node_var->next != NULL){
+            list_length++;
+            node_var = node_var->next;//gets last node
+        }
+        list_length++;//calculates list length
+        node_var->next = head;// turns list into a loop so we can't have node->next issues
+
+        node_var = head;
+
+        for(uint i = 0; i < list_length - k % list_length - 1; i++){
+            node_var = node_var->next;//loop to the element that we need to cut the list at
+        }
+        temp_node = node_var->next;//hold what will be the new head
+        node_var->next = NULL;//cut the list here
+        return temp_node;//return new head
+    }
+};
