@@ -1,0 +1,33 @@
+//https://leetcode.com/problems/number-of-boomerangs/
+
+#include <map>
+
+
+class Solution {
+public:
+    int numberOfBoomerangs(vector<vector<int>>& points) {
+        uint booms = 0;//boomerang counter
+
+
+
+        for(uint i = 0; i < points.size(); i++){//for every point
+            std::map<int, uint> map;
+            for(uint j = 0; j < points.size(); j++){//check it against every other point
+                if(j != i){//don't double count
+                    static int hash;
+                    hash = abs((points[i][0]-points[j][0])*(points[i][0]-points[j][0]))+abs((points[i][1]-points[j][1])*(points[i][1]-points[j][1]));
+                    printf("%d\n", hash);
+                    map[hash] += 1;
+
+                }
+            }
+            for (auto key : map) {
+                printf("\tkey:%d val: %d\n",key.first, key.second);
+                booms += key.second * (key.second - 1);
+                //n choose 2 = n!/(2(n-2)!)==(n(n-1))/(2)
+                //since the order matters, we can double this getting simply n(n-1)
+            }
+        }
+        return booms;
+    }
+};
