@@ -1,0 +1,30 @@
+//https://leetcode.com/problems/repeated-dna-sequences/description/
+class Solution {
+public:
+    vector<string> findRepeatedDnaSequences(string s) {
+        vector<string> return_string;
+        string str;
+
+        for(uint i = 0; i < s.size() - 10; i++){//looks at all possible first matches
+            for(uint j = i+1; j < s.size()-10;j++){//looks at all possible second matches
+                if(s.at(i) == s.at(j)){//if the start is the same
+                    str = s.at(i);
+                    for(uint k = j; k < j + 10; k++){//check to make sure the rest of the 10 characters are the same
+                        if(s.at(k)!=s.at(i+k-j)) break;
+                        if (k!=j) str += s.at(i+k-j);
+                        if(k == j + 10 - 1){//if they match, update the return vector
+                            if (return_string.size() == 0) return_string.push_back(str);
+                            else {
+                                for(uint q = 0; q < return_string.size(); q++){
+                                    if (str == return_string[q]) break;
+                                    if (q == return_string.size() - 1) return_string.push_back(str);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        return return_string;
+    }
+};
