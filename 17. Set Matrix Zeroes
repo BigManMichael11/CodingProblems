@@ -1,0 +1,36 @@
+//https://leetcode.com/problems/set-matrix-zeroes/description/
+class Solution {
+public:
+    void setZeroes(vector<vector<int>>& matrix) {
+        unordered_map<int, bool> zero_location_x;//maps for x and y 0 indexes
+        unordered_map<int, bool> zero_location_y;
+
+        uint cycles = 0;//for efficiency counting
+
+        for(uint i = 0; i < matrix.size(); i++){
+            for(uint j = 0; j < matrix[0].size();j++){
+                cycles++;
+                if(matrix[i][j] == 0){
+                    zero_location_x[i] = true;//mark these locations in our maps
+                    zero_location_y[j] = true;
+                }
+            }
+        }
+
+        for(auto it : zero_location_x){//set the colums to 0
+            for(uint i = 0; i < matrix[0].size();i++){
+                cycles++;
+                matrix[it.first][i] = 0;
+            }
+        }
+
+        for(auto it : zero_location_y){//set the rows to 0
+            for(uint i = 0; i < matrix.size();i++){
+                cycles++;
+                matrix[i][it.first] = 0;
+            }
+        }
+        printf("Cycles: %d\n", cycles);
+
+    }
+};
