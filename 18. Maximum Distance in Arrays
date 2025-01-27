@@ -1,0 +1,43 @@
+//https://leetcode.com/problems/maximum-distance-in-arrays/
+class Solution {
+public:
+    int maxDistance(vector<vector<int>>& arrays) {
+        vector<int> max_vals;
+        vector<int> min_vals;
+
+        uint cycles = 0;//efficiency
+
+        int temp_max;
+        int temp_min;
+
+        for(uint i = 0; i < arrays.size(); i++){
+            for(uint j = 0; j < arrays[i].size();j++){
+                cycles++;
+                if(j == 0){
+                    temp_max = arrays[i][j];
+                    temp_min = temp_max;
+                } else {
+                    if (arrays[i][j] > temp_max) temp_max = arrays[i][j];
+                    if (arrays[i][j] < temp_min) temp_min = arrays[i][j];
+                }
+                if(j == arrays[i].size() - 1){
+                    max_vals.push_back(temp_max);
+                    min_vals.push_back(temp_min);
+                }
+            }
+        }
+
+        int max_sum = abs(max_vals[0] - min_vals[0]);
+
+        for(uint i = 0; i < max_vals.size(); i++){
+            for(uint j = 0; j < min_vals.size(); j++){
+                cycles++;
+                if(j != i){
+                    if (max_sum < abs(max_vals[i] - min_vals[j])) max_sum = abs(max_vals[i] - min_vals[j]);
+                }
+            }
+        }
+        printf("Cycle count: %d\n", cycles);
+        return max_sum;
+    }
+};
