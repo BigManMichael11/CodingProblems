@@ -1,0 +1,22 @@
+//https://leetcode.com/problems/integer-replacement/
+#include <stdlib.h>     /* abs */
+
+class Solution {
+public:
+    int integerReplacement(int n) {
+        int nearest_pow = 1;//nearest power of 2
+        int nearest_count = 1;//
+        int cycles = 0;
+        for(uint i = 0; i < n; i++){
+            cycles++;
+            if (n <= 2) break;
+            if ((1 << nearest_pow <= n) && (n < (1 << (nearest_pow + 1))))break;
+            nearest_pow++;
+        }
+        if ((n - (1 << nearest_pow)) > ((1 << nearest_pow + 1) - n)){
+            nearest_pow++;
+        }
+        printf("Cycle Count: %d %d", cycles, nearest_pow);
+        return (nearest_pow + abs(n - (1 << nearest_pow)));
+    }
+};
