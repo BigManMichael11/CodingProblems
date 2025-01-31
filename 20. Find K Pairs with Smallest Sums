@@ -1,0 +1,27 @@
+//https://leetcode.com/problems/find-k-pairs-with-smallest-sums/?envType=study-plan-v2&envId=top-interview-150
+#include <algorithm> //std::min
+
+class Solution {
+public:
+    vector<vector<int>> kSmallestPairs(vector<int>& nums1, vector<int>& nums2, int k) {
+        vector<vector<int>> smallest_sums;
+        vector<int> sum_pair;
+        sum_pair.resize(2);
+        
+        uint index1;
+        uint index2;
+        index1 = 0;
+        index2 = 0;
+
+        for(uint i = 0; i < k; i++){
+            if(i != 0){
+                if(nums1[index1 + 1 ] + nums2[index2] < nums1[index1] + nums2[index2 + 1]) index1++;
+                else index2++;//find smaller next sum
+            }
+            sum_pair[0] = nums1[index1] < nums2[index2] ? nums1[index1] : nums2[index2];//order lowest first
+            sum_pair[1] = nums1[index1] >= nums2[index2] ? nums1[index1] : nums2[index2];
+            smallest_sums.push_back(sum_pair);
+        }
+        return smallest_sums;
+    }
+};
