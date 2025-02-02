@@ -1,0 +1,70 @@
+//https://leetcode.com/problems/minesweeper/
+
+class Solution {
+private:
+    bool handle_click(vector<vector<char>>& board, int click_row, int click_col){
+        char click_result;
+        click_result = board[click_row][click_col];
+        if(click_result == 'M'){//mine
+            printf("Mine found\n");
+            handle_mine(board, click_row, click_col);
+            return false;
+        }else if (click_result == 'E'){//empty square
+            handle_empty(board, click_row, click_col);
+        }
+        //if click on non-mine and non-empty, do nothing
+
+        return true;
+    }
+    
+    void handle_mine(vector<vector<char>>& board, int click_row, int click_col){
+        board[click_row][click_col] = 'X';
+    }
+
+    //counts mines around square
+    uint count_mines(vector<vector<char>>& board, int click_row, int click_col){
+        char click_result;
+        int click_row_new;
+        int click_col_new;
+        uint mine_count;
+        mine_count = 0;
+        for(uint i = 0; i < 9 ; i++){
+            click_row_new = click_row - 1 + i/3;
+            click_col_new = click_col - 1 + i%3;
+            if(click_col_new < board[0].size() && click_row_new < board.size() && click_col_new >= 0 && click_row_new >= 0){
+                click_result = board[click_row_new][click_col_new];
+                if(click_result == 'M'){//count mines
+                    mine_count++;
+                }
+            }
+        }
+        return mine_count;
+    }
+    void handle_empty(vector<vector<char>>& board, int click_row, int click_col){
+        char click_result;
+        int click_row_new;
+        int click_col_new;
+        uint mine_count;
+        for(uint i = 0; i < 9 ; i++){
+            click_row_new = click_row - 1 + i/3;
+            click_col_new = click_col - 1 + i%3;
+            if(click_col_new < board[0].size() && click_row_new < board.size() && click_col_new >= 0 && click_row_new >= 0){
+                click_result = board[click_row_new][click_col_new];
+
+                if(click_result == 'E'){//if not revealed and not mine
+                    //reveal it, and handle empty on it
+                    printf("Empty found\n");
+                    mine_count = count_mines(board, click_row_new,click_col_new);
+                    board[click_row_new][click_col_new] = mine_count == 0 ? 'B' : mine_count + '0';//update with number or B for blank
+                    if (mine_count == 0 ) handle_empty(board, click_row_new,click_col_new);//only reveal more squares if this one is blank
+                }
+            }
+        }
+        return;
+    }
+public:
+    vector<vector<char>> updateBoard(vector<vector<char>>& board, vector<int>& click) {
+        handle_click(board, click[0], click[1]);
+        return board;
+    }
+};
