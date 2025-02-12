@@ -1,0 +1,38 @@
+//https://leetcode.com/problems/string-to-integer-atoi/description/
+
+#include <math.h>       /* pow */
+#include <string>
+#include <vector>
+
+class Solution {
+public:
+    int myAtoi(string s) {
+        int total = 0;
+        vector<int> nums;
+        uint pow_val = 0;
+        bool found_num = false;
+        bool neg = false;
+        
+        uint cycles = 0;
+
+        for(int i = 0; i < s.length(); i++){
+            cycles++;
+            if(found_num && !(s[i] <= '9' && s[i] >= '0')) break;
+            if(s[i] <= '9' && s[i] >= '0'){
+                nums.push_back(s[i] - '0');
+                found_num = true;
+            }
+            if(s[i] == '-' && ((s[i + 1] <= '9' && s[i + 1] >= '0'))) neg = true;
+        }
+
+
+        for(int i = nums.size() - 1; i >= 0 ; i--){
+            total += nums[i] * pow(10,pow_val++);
+            cycles++;
+        }
+        printf("Cycles: %d\n", cycles);
+
+        total = neg ? -total : total;
+        return total;
+    }
+};
