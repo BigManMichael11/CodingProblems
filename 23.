@@ -1,0 +1,61 @@
+//https://leetcode.com/problems/replace-words/
+#include <unordered_map>
+
+class Solution {
+private:
+    uint cycles = 0;
+
+    string get_word(string sentence){
+        cycles++;
+
+        string word = "";
+        uint space_idx;
+        space_idx = sentence.find(' ');
+        if(space_idx != -1) return sentence.substr(0,space_idx);
+        else return sentence;
+    }
+    string get_remainder(string sentence){
+        string remainder = "";
+        uint space_index;
+        for(space_index = 0; space_index < sentence.size(); space_index++){
+            cycles++;
+            if(sentence[space_index] == ' ') break;
+        }
+        if(space_index == sentence.size()) return "";
+        remainder = sentence.substr(space_index + 1, sentence.size());
+        return remainder;
+    }
+
+public:
+    string replaceWords(vector<string>& dictionary, string sentence) {
+        unordered_map<string, string> dict_map;
+        for(uint i = 0; i < dictionary.size(); i++){
+            cycles++;
+            dict_map[dictionary[i]] = dictionary[i];
+        }
+        string result = "";
+        string word = "";
+        string remainder = sentence;
+
+        for(uint i = 0; i < sentence.size(); i++){
+            cycles++;
+            word = get_word(remainder);
+            remainder = get_remainder(remainder);
+            if(word == "") break;
+            for(uint j = 1; j < word.size(); j++){
+                cycles++;
+                if (dict_map[word.substr(0,j)] != ""){
+                    result += dict_map[word.substr(0,j)];
+                    break;
+                }
+                if(j == word.size() - 1) result += word;
+            }
+            if(remainder != "") result += " ";
+            else break;
+            
+        }
+
+        printf("Cycles: %d\n", cycles);
+        return result;        
+    }
+};
