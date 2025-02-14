@@ -1,0 +1,19 @@
+//https://leetcode.com/problems/dota2-senate/
+
+class Solution {
+public:
+    string predictPartyVictory(string senate) {
+        for(uint i = 0; i < senate.size(); i++){
+            if(i == senate.size() - 1) return senate[i] == 'R' ? "Radiant" : "Dire";
+            for(uint j = i + 1; j < senate.size(); j++){
+                if(senate[j] == 'R' && senate[i] == 'D' || senate[j] == 'D' && senate[i] == 'R'){
+                    senate.erase(senate.begin() + j);
+                    if(i == senate.size() - 1) return senate[i] == 'R' ? "Radiant" : "Dire";
+                    break;
+                }
+            }
+        }
+
+        return "draw";
+    }
+};
