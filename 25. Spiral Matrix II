@@ -1,0 +1,48 @@
+//https://leetcode.com/problems/spiral-matrix-ii/
+#include <math.h>       /* pow */
+enum direciton_enum {
+  RIGHT,
+  LEFT,
+  DOWN,
+  UP
+};
+class Solution {
+public:
+    vector<vector<int>> generateMatrix(int n) {
+        vector<vector<int>> ret(n, std::vector<int>(n, 0));
+        int x = 0;
+        int y = n-1;
+        int x_off = 0;
+        int y_off = 0;
+        int direction = RIGHT;
+
+        for(uint i = 1; i <= n*n; i++){
+            printf("%d %d %d\n",direction,  x, y);
+            ret[n-y-1][x] = i;
+            if (direction == RIGHT){
+                if (x < n - 1 - x_off) x++;
+                if (x == (n - 1 - x_off)) direction = DOWN;
+            }
+            else if (direction == LEFT){
+                if (x > 0 + x_off) x--;
+                if (x == x_off){
+                    direction = UP;
+                    y_off++;
+                }
+            }
+            else if (direction == UP){
+                if (y < n - 1 - y_off) y++;
+                if (y == n - 1 - y_off){
+                    direction = RIGHT;
+                    x_off++;
+                }
+            }
+            else if (direction == DOWN){
+                if (y > 0 + y_off) y--;
+                if (y == y_off) direction = LEFT;
+            }
+        }
+
+        return ret;
+    }
+};
